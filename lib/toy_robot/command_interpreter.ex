@@ -1,7 +1,35 @@
 defmodule ToyRobot.CommandInterpreter do
   @spec interpret(any()) :: list()
+
   @doc """
   Interpreta comandos de uma lista de comandos, preparando-os para serem executados
+
+  ## Exemplo
+
+  ### Comandos válidos
+
+      iex> alias ToyRobot.CommandInterpreter
+      ToyRobot.CommandInterpreter
+      iex> commands = ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "REPORT"]
+      iex> CommandInterpreter.interpret(commands)
+      [
+        {:place, %{x: 1, y: 2, facing: :north}},
+        :move,
+        :turn_left,
+        :turn_right,
+        :report
+      ]
+
+  ### Comandos inválidos
+
+      iex> alias ToyRobot.CommandInterpreter
+      iex> commands = ["SPIN", "TWIRL", "EXTERMINATE"]
+      iex> CommandInterpreter.interpret(commands)
+      [
+        {:invalid, "SPIN"},
+        {:invalid, "TWIRL"},
+        {:invalid, "EXTERMINATE"}
+      ]
   """
   def interpret(commands) do
     Enum.map(commands, &do_interpret/1)
